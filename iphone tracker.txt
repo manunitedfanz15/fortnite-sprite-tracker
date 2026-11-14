@@ -1,0 +1,336 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#101a30">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Sprite Tracker">
+<title>Fortnite Sprite Tracker</title>
+<style>
+*{box-sizing:border-box}
+:root{
+ --bg:#0b1020;--panel:#17233b;--line:#30405f;
+ --text:#f4f7ff;--muted:#aebbd1;--blue:#63a7ff;
+ --green:#6ee7b7;
+}
+html{background:var(--bg);overflow-x:hidden}
+body{
+ margin:0;background:var(--bg);color:var(--text);
+ font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Arial,sans-serif;
+ min-height:100vh;overflow-x:hidden;
+ padding-bottom:env(safe-area-inset-bottom);
+}
+header{
+ padding:25px 16px 20px;text-align:center;
+ background:linear-gradient(145deg,#1b3155,#14213b);
+}
+h1{margin:0;font-size:clamp(24px,5vw,38px);letter-spacing:.5px}
+header p{color:#c0cce0;margin:8px 0 0;font-size:14px}
+main{max-width:1400px;margin:auto;padding:16px}
+.stats{
+ display:grid;grid-template-columns:repeat(5,minmax(0,1fr));
+ gap:9px;margin-bottom:20px;
+}
+.stat{
+ min-width:0;background:var(--panel);border:1px solid var(--line);
+ border-radius:12px;padding:12px 8px;text-align:center;
+}
+.stat span{
+ display:block;color:var(--muted);font-size:clamp(8px,.9vw,11px);
+ font-weight:800;white-space:nowrap;
+}
+.stat b{display:block;font-size:clamp(14px,2vw,23px);margin-top:5px;white-space:nowrap}
+.progress{height:7px;background:#0c1425;border-radius:20px;margin-top:8px;overflow:hidden}
+.bar{height:100%;width:0;background:linear-gradient(90deg,#579bff,var(--green));transition:width .2s}
+.tabs{
+ display:flex;gap:8px;overflow-x:auto;padding:3px 1px 10px;
+ margin:10px 0;scrollbar-width:thin;
+ -webkit-overflow-scrolling:touch;
+}
+button{
+ cursor:pointer;border:1px solid #344766;background:#1d2d49;
+ color:white;border-radius:10px;padding:11px 15px;
+ font:inherit;font-size:14px;font-weight:650;
+}
+button.active{background:var(--blue);color:#071426;border-color:var(--blue)}
+.filters{
+ display:flex;gap:9px;align-items:center;flex-wrap:wrap;
+ background:var(--panel);border:1px solid var(--line);
+ border-radius:13px;padding:12px;margin:12px 0;
+}
+input,select{font:inherit}
+input[type=search],select{
+ min-height:43px;background:#0d172a;color:white;
+ border:1px solid #344766;border-radius:9px;padding:10px 12px;
+}
+input[type=search]{flex:1;min-width:160px}
+.view-switch{display:flex;gap:6px;margin-left:auto}
+.view-switch button{padding:9px 12px}
+.note{color:var(--muted);font-size:13px;margin:12px 2px}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(255px,1fr));gap:13px}
+.card{
+ min-width:0;background:var(--panel);border:1px solid var(--line);
+ border-radius:14px;padding:14px;
+}
+.sprite-top{display:flex;gap:13px;align-items:center}
+.sprite-img{
+ width:88px;height:88px;object-fit:contain;flex:none;
+ background:#0b1427;border-radius:11px;border:1px solid #344766;
+}
+.name{font-weight:800;font-size:16px}
+.meta{color:var(--muted);font-size:12px;margin-top:5px}
+.rarity{
+ font-size:11px;font-weight:800;margin-top:7px;display:inline-block;
+ padding:4px 8px;border-radius:20px;background:#293957;
+}
+.rarity.rare{color:#79b7ff}
+.rarity.epic{color:#d6a0ff}
+.rarity.legendary{color:#ffd36b}
+.rarity.mythic{color:#ff9d9d}
+.checks{display:grid;gap:8px;margin-top:13px}
+.check{
+ display:flex;align-items:center;gap:11px;
+ min-height:43px;background:#0d172a;border:1px solid #2a3b59;
+ padding:10px 12px;border-radius:9px;font-size:14px;
+ cursor:pointer;touch-action:manipulation;
+}
+.check input{
+ width:21px;height:21px;flex:none;
+ accent-color:var(--blue);cursor:pointer;
+}
+.check.done{background:#102b25;border-color:#347a68}
+.single{margin-top:13px}
+.empty{padding:30px;text-align:center;color:var(--muted)}
+.actions{display:flex;gap:8px;justify-content:center;flex-wrap:wrap;margin:25px 0}
+.actions button{min-height:43px}
+.footer-note{text-align:center;color:var(--muted);font-size:12px;line-height:1.5}
+
+/* iPhone and small mobile screens */
+@media(max-width:600px){
+ header{padding:22px 12px 17px}
+ header p{font-size:12px}
+ main{padding:12px 11px}
+ .stats{gap:5px;margin-bottom:15px}
+ .stat{padding:9px 3px;border-radius:9px}
+ .stat span{font-size:clamp(7px,2vw,9px);letter-spacing:-.35px}
+ .stat b{font-size:clamp(12px,3.5vw,17px);margin-top:5px}
+ .progress{height:5px;margin-top:6px}
+ .tabs{margin:8px -11px 12px;padding:3px 11px 9px}
+ .tabs button{flex:none;white-space:nowrap;padding:11px 14px}
+ .filters{display:grid;grid-template-columns:1fr 1fr;gap:8px;padding:10px}
+ input[type=search]{grid-column:1/-1;width:100%;min-width:0}
+ .filters select{width:100%;min-width:0}
+ .view-switch{grid-column:1/-1;width:100%;margin:0}
+ .view-switch button{flex:1;padding:10px 5px}
+ .grid{grid-template-columns:1fr;gap:10px}
+ .card{padding:12px}
+ .sprite-img{width:78px;height:78px}
+ .name{font-size:16px}
+ .checks{gap:7px}
+ .check{min-height:47px;font-size:14px}
+ .actions{display:grid;grid-template-columns:1fr 1fr}
+ .actions button{width:100%;padding:11px 5px}
+ .actions button:last-of-type{grid-column:1/-1}
+}
+
+/* Very small iPhones */
+@media(max-width:360px){
+ main{padding-left:8px;padding-right:8px}
+ .stats{gap:3px}
+ .stat{padding:8px 2px}
+ .stat span{font-size:7px}
+ .stat b{font-size:12px}
+ .filters{padding:8px}
+}
+</style>
+</head>
+<body>
+<header>
+<h1>FORTNITE SPRITE TRACKER</h1>
+<p>Collect every Sprite. Master every variant.</p>
+</header>
+<main>
+<section class="stats">
+ <div class="stat"><span>TOTAL</span><b id="total">35</b></div>
+ <div class="stat"><span>OWNED</span><b id="ownedCount">0/35</b><div class="progress"><div class="bar" id="ownedBar"></div></div></div>
+ <div class="stat"><span>MASTERED</span><b id="masteredCount">0/35</b><div class="progress"><div class="bar" id="masteredBar"></div></div></div>
+ <div class="stat"><span>FOUND</span><b id="foundCount">0/35</b><div class="progress"><div class="bar" id="foundBar"></div></div></div>
+ <div class="stat"><span>WON WITH</span><b id="wonCount">0/35</b><div class="progress"><div class="bar" id="wonBar"></div></div></div>
+</section>
+
+<nav class="tabs" id="tabs">
+ <button class="active" data-tab="overview">Overview</button>
+ <button data-tab="owned">Owned</button>
+ <button data-tab="mastered">Mastered</button>
+ <button data-tab="found">Found in Island</button>
+ <button data-tab="won">Won With</button>
+</nav>
+
+<section class="filters">
+ <input type="search" id="search" placeholder="Search Sprites...">
+ <select id="rarity">
+  <option value="all">All Rarities</option>
+  <option>Rare</option><option>Epic</option>
+  <option>Legendary</option><option>Mythic</option>
+ </select>
+ <select id="variant">
+  <option value="all">All Variants</option>
+  <option>Normal</option><option>Fortune</option><option>Cursed</option>
+ </select>
+ <div class="view-switch" id="views">
+  <button class="active" data-view="all">All</button>
+  <button data-view="remaining">Remaining</button>
+  <button data-view="completed">Completed</button>
+ </div>
+</section>
+
+<p class="note" id="note">Overview: all Sprites and all four tracking checkboxes.</p>
+<section class="grid" id="grid"></section>
+
+<div class="actions">
+ <button id="export">Export Backup</button>
+ <button id="import">Import Backup</button>
+ <button id="reset">Reset Progress</button>
+ <input type="file" id="file" accept=".json" hidden>
+</div>
+<p class="footer-note">
+Progress saves automatically in this browser.<br>
+Export a backup before clearing browser data.
+</p>
+</main>
+
+<script>
+const KEY="fortniteSpriteTracker35";
+const base=[
+ ["Halfpeel'd","Rare","halfpeeld",3],
+ ["Re-Pete","Rare","re-pete",3],
+ ["Barry O'Fish","Rare","barry-o-fish",3],
+ ["Wayfinder","Rare","wayfinder",3],
+ ["Kelper","Epic","kelper",3],
+ ["Exmarks","Epic","exmarks",3],
+ ["Lil' Squibbly","Epic","lil-squibbly",3],
+ ["Chester","Epic","chester",3],
+ ["Lil' Flacko","Legendary","lil-flacko",3],
+ ["Transponder Snail","Legendary","transponder-snail",1],
+ ["Sweet Dreams","Mythic","sweet-dreams",1],
+ ["Plundarrgh","Mythic","plundarrgh",3],
+ ["Lil' Uzi Vert Jr.","Mythic","lil-uzi-vert-jr",3]
+];
+const variants=["Normal","Fortune","Cursed"];
+const sprites=base.flatMap((b,i)=>variants.slice(0,b[3]).map(v=>({
+ id:i+"-"+v,name:b[0],rarity:b[1],slug:b[2],variant:v,
+ image:"https://www.fortnitetools.com/images/sprites/"+
+ (v==="Normal"?"":v.toLowerCase()+"-")+b[2]+"-sprite.webp"
+})));
+const labels={owned:"Owned",mastered:"Mastered",found:"Found in Island",won:"Won With"};
+let data={};
+try{data=JSON.parse(localStorage.getItem(KEY)||"{}")||{};}catch(e){data={};}
+let tab="overview",view="all";
+const $=id=>document.getElementById(id);
+
+function state(s){if(!data[s.id])data[s.id]={};return data[s.id];}
+function save(){localStorage.setItem(KEY,JSON.stringify(data));updateStats();}
+function complete(s){
+ const d=state(s);
+ return tab==="overview"
+  ?Object.keys(labels).every(k=>!!d[k])
+  :!!d[tab];
+}
+function getList(){
+ const q=$("search").value.toLowerCase().trim();
+ return sprites.filter(s=>{
+  if(q&&!(s.name+" "+s.variant+" "+s.rarity).toLowerCase().includes(q))return false;
+  if($("rarity").value!=="all"&&s.rarity!==$("rarity").value)return false;
+  if($("variant").value!=="all"&&s.variant!==$("variant").value)return false;
+  if(view==="remaining"&&complete(s))return false;
+  if(view==="completed"&&!complete(s))return false;
+  return true;
+ });
+}
+function card(s){
+ const d=state(s);
+ const img=`<img class="sprite-img" src="${s.image}" alt="${s.name} ${s.variant}" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">`;
+ const fallback=`<div class="sprite-img" style="display:none;align-items:center;justify-content:center;text-align:center;padding:7px;font-size:11px;color:#aebbd1">Image unavailable</div>`;
+ let checks="";
+ if(tab==="overview"){
+  checks='<div class="checks">'+Object.keys(labels).map(k=>`
+   <label class="check ${d[k]?'done':''}">
+    <input type="checkbox" data-id="${s.id}" data-key="${k}" ${d[k]?'checked':''}>
+    <span>${labels[k]}</span>
+   </label>`).join("")+'</div>';
+ }else{
+  const k=tab;
+  checks=`<div class="single"><label class="check ${d[k]?'done':''}">
+   <input type="checkbox" data-id="${s.id}" data-key="${k}" ${d[k]?'checked':''}>
+   <span>${d[k]?"Completed — click to undo":"Mark as "+labels[k]}</span>
+  </label></div>`;
+ }
+ return `<article class="card">
+  <div class="sprite-top">${img}${fallback}<div>
+   <div class="name">${s.name}</div>
+   <div class="meta">${s.variant} Variant</div>
+   <span class="rarity ${s.rarity.toLowerCase()}">${s.rarity}</span>
+  </div></div>${checks}
+ </article>`;
+}
+function updateStats(){
+ const total=sprites.length;
+ $("total").textContent=total;
+ Object.keys(labels).forEach(k=>{
+  const n=sprites.filter(s=>data[s.id]&&data[s.id][k]).length;
+  $(k+"Count").textContent=n+"/"+total;
+  $(k+"Bar").style.width=(n/total*100)+"%";
+ });
+}
+function render(){
+ const list=getList();
+ $("grid").innerHTML=list.length?list.map(card).join(""):'<div class="empty">No Sprites match your filters.</div>';
+ $("views").style.display=tab==="overview"?"none":"flex";
+ $("note").textContent=tab==="overview"
+  ?"Overview: all Sprites and all four tracking checkboxes."
+  :labels[tab]+" — "+view.charAt(0).toUpperCase()+view.slice(1);
+ document.querySelectorAll("[data-tab]").forEach(b=>b.classList.toggle("active",b.dataset.tab===tab));
+ document.querySelectorAll("[data-view]").forEach(b=>b.classList.toggle("active",b.dataset.view===view));
+ updateStats();
+}
+$("tabs").onclick=e=>{
+ const b=e.target.closest("[data-tab]");if(!b)return;
+ tab=b.dataset.tab;view="all";render();
+};
+$("views").onclick=e=>{
+ const b=e.target.closest("[data-view]");if(!b)return;
+ view=b.dataset.view;render();
+};
+$("grid").onchange=e=>{
+ const c=e.target.closest('input[type="checkbox"]');if(!c)return;
+ state({id:c.dataset.id})[c.dataset.key]=c.checked;
+ save();render();
+};
+["search","rarity","variant"].forEach(id=>$(id).addEventListener(id==="search"?"input":"change",render));
+$("export").onclick=()=>{
+ const blob=new Blob([JSON.stringify({version:1,data},null,2)],{type:"application/json"});
+ const a=document.createElement("a");a.href=URL.createObjectURL(blob);
+ a.download="fortnite-sprite-tracker-backup.json";a.click();
+ URL.revokeObjectURL(a.href);
+};
+$("import").onclick=()=>$("file").click();
+$("file").onchange=async e=>{
+ const f=e.target.files[0];if(!f)return;
+ try{
+  const parsed=JSON.parse(await f.text()),incoming=parsed.data||parsed;
+  if(!incoming||typeof incoming!=="object")throw Error();
+  data={...data,...incoming};save();render();alert("Backup imported!");
+ }catch(err){alert("Could not read that backup file.");}
+ e.target.value="";
+};
+$("reset").onclick=()=>{
+ if(!confirm("Reset all Sprite progress? Export a backup first if needed."))return;
+ data={};save();render();
+};
+render();
+</script>
+</body>
+</html>
