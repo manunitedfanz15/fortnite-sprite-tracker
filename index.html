@@ -7,6 +7,7 @@
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="theme-color" content="#101522">
 <title>Fortnite Sprite Tracker</title>
+
 <style>
 :root {
   color-scheme: dark;
@@ -20,6 +21,7 @@
   --green:#43d69a;
 }
 * { box-sizing:border-box; }
+
 body {
   margin:0;
   padding:20px;
@@ -32,6 +34,7 @@ body {
 header { margin-bottom:20px; }
 h1 { margin:0 0 6px; font-size:29px; }
 .subtitle { color:var(--muted); font-size:14px; }
+
 .stats {
   display:grid;
   grid-template-columns:repeat(5,minmax(0,1fr));
@@ -66,6 +69,7 @@ h1 { margin:0 0 6px; font-size:29px; }
   background:var(--green);
   transition:width .2s;
 }
+
 .tabs {
   display:flex;
   gap:7px;
@@ -89,6 +93,7 @@ h1 { margin:0 0 6px; font-size:29px; }
   background:#24538a;
   border-color:var(--blue);
 }
+
 .controls {
   display:grid;
   grid-template-columns:minmax(180px,2fr) repeat(2,minmax(120px,1fr));
@@ -111,6 +116,7 @@ input,select {
   margin-bottom:17px;
   overflow-x:auto;
 }
+
 .cards {
   display:grid;
   grid-template-columns:repeat(auto-fill,minmax(255px,1fr));
@@ -168,6 +174,7 @@ input,select {
 .rarity.Epic { color:#c38aff; }
 .rarity.Legendary { color:#ffb65c; }
 .rarity.Mythic { color:#ffdf6c; }
+
 .checks {
   display:grid;
   grid-template-columns:1fr 1fr;
@@ -215,6 +222,7 @@ input,select {
 }
 .action:hover,.tab:hover,.filter:hover { filter:brightness(1.2); }
 .danger { border-color:#914d58; color:#ff9ba7; }
+
 footer {
   color:var(--muted);
   font-size:11px;
@@ -222,13 +230,23 @@ footer {
   text-align:center;
   line-height:1.5;
 }
+
 @media(max-width:600px) {
-  body { padding:12px; padding-bottom:calc(25px + env(safe-area-inset-bottom)); }
+  body {
+    padding:12px;
+    padding-bottom:calc(25px + env(safe-area-inset-bottom));
+  }
   h1 { font-size:23px; }
   .stats { gap:5px; margin:15px 0; }
   .stat { padding:9px 3px; border-radius:9px; }
-  .stat span { font-size:clamp(7px,2vw,9px); letter-spacing:-.35px; }
-  .stat b { font-size:clamp(12px,3.5vw,17px); margin-top:5px; }
+  .stat span {
+    font-size:clamp(7px,2vw,9px);
+    letter-spacing:-.35px;
+  }
+  .stat b {
+    font-size:clamp(12px,3.5vw,17px);
+    margin-top:5px;
+  }
   .progress { height:5px; margin-top:6px; }
   .controls { grid-template-columns:1fr 1fr; }
   .controls input { grid-column:1/-1; }
@@ -246,8 +264,10 @@ footer {
 }
 </style>
 </head>
+
 <body>
 <div class="container">
+
 <header>
   <h1>🎮 Fortnite Sprite Tracker</h1>
   <div class="subtitle">Treasure Hunters • Track your complete Sprite collection</div>
@@ -255,23 +275,28 @@ footer {
 
 <section class="stats">
   <div class="stat">
-    <span>TOTAL</span><b id="total">42</b>
+    <span>TOTAL</span>
+    <b id="total">42</b>
     <div class="progress"><div id="totalBar"></div></div>
   </div>
   <div class="stat">
-    <span>OWNED</span><b id="ownedCount">0/42</b>
+    <span>OWNED</span>
+    <b id="ownedCount">0/42</b>
     <div class="progress"><div id="ownedBar"></div></div>
   </div>
   <div class="stat">
-    <span>MASTERED</span><b id="masteredCount">0/42</b>
+    <span>MASTERED</span>
+    <b id="masteredCount">0/42</b>
     <div class="progress"><div id="masteredBar"></div></div>
   </div>
   <div class="stat">
-    <span>FOUND</span><b id="foundCount">0/42</b>
+    <span>FOUND</span>
+    <b id="foundCount">0/42</b>
     <div class="progress"><div id="foundBar"></div></div>
   </div>
   <div class="stat">
-    <span>WON WITH</span><b id="wonCount">0/42</b>
+    <span>WON WITH</span>
+    <b id="wonCount">0/42</b>
     <div class="progress"><div id="wonBar"></div></div>
   </div>
 </section>
@@ -286,6 +311,7 @@ footer {
 
 <section class="controls">
   <input id="search" type="search" placeholder="Search Sprites...">
+
   <select id="rarity">
     <option value="All">All Rarities</option>
     <option value="Rare">Rare</option>
@@ -293,6 +319,7 @@ footer {
     <option value="Legendary">Legendary</option>
     <option value="Mythic">Mythic</option>
   </select>
+
   <select id="variant">
     <option value="All">All Variants</option>
     <option value="Normal">Normal</option>
@@ -320,6 +347,7 @@ footer {
   Progress saves automatically in this browser.<br>
   Fan-made tracker. Not affiliated with or endorsed by Epic Games.
 </footer>
+
 </div>
 
 <script>
@@ -342,7 +370,6 @@ const base = [
  ["Zee","Mythic","zee",1]
 ];
 
-
 const variants = ["Normal","Fortune","Cursed"];
 
 const variantPrefix = {
@@ -351,8 +378,8 @@ const variantPrefix = {
   Cursed:"cursed-"
 };
 
-// Verified images for the seven new Sprites.
-// Original 35 Sprite image URLs remain unchanged.
+// New Sprite image links.
+// The original 35 Sprite image links are preserved below.
 const newSpriteImages = {
   "mini-miku-Normal":
     "https://fortnite.gg/img/x/sprites/icons/T_Icon_BR_Creature_Sprite_LushlyZest_ui_v2_1_Alpha_L.webp",
@@ -390,10 +417,7 @@ base.forEach((item,index) => {
       rarity,
       slug,
       variant,
-
-      // Use verified image for new Sprites,
-      // otherwise preserve the original image URL.
-      image: newSpriteImages[imageKey] ||
+      image:newSpriteImages[imageKey] ||
         "https://www.fortnitetools.com/images/sprites/"+
         variantPrefix[variant]+slug+"-sprite.webp"
     });
@@ -408,6 +432,7 @@ const labels = {
 };
 
 const STORAGE_KEY = "fortniteSpriteTracker35";
+
 let data = {};
 let activeTab = "all";
 let activeFilter = "all";
@@ -421,30 +446,49 @@ function loadData() {
   } catch(e) {
     data = {};
   }
+
   sprites.forEach(sprite => {
-    if (!data[sprite.id]) {
+    const existing = data[sprite.id];
+
+    if (!existing || typeof existing !== "object") {
       data[sprite.id] = {
-        owned:false, mastered:false, found:false, won:false
+        owned:false,
+        mastered:false,
+        found:false,
+        won:false
       };
+    } else {
+      Object.keys(labels).forEach(key => {
+        data[sprite.id][key] = !!existing[key];
+      });
     }
   });
 }
+
 function saveData() {
   localStorage.setItem(STORAGE_KEY,JSON.stringify(data));
 }
+
 function updateStats() {
   const total = sprites.length;
+
   $("total").textContent = total;
   $("totalBar").style.width = "100%";
+
   Object.keys(labels).forEach(key => {
-    const count = sprites.filter(s => data[s.id] && data[s.id][key]).length;
+    const count = sprites.filter(sprite =>
+      data[sprite.id] && data[sprite.id][key]
+    ).length;
+
     $(key+"Count").textContent = count+"/"+total;
     $(key+"Bar").style.width = (count/total*100)+"%";
   });
 }
+
 function isComplete(sprite) {
-  return Object.keys(labels).every(k => data[sprite.id][k]);
+  return Object.keys(labels).every(key => data[sprite.id][key]);
 }
+
 function render() {
   const search = $("search").value.toLowerCase().trim();
   const rarity = $("rarity").value;
@@ -452,11 +496,22 @@ function render() {
 
   const visible = sprites.filter(sprite => {
     const d = data[sprite.id];
-    if (search && !(sprite.name+" "+sprite.variant).toLowerCase().includes(search)) return false;
+
+    // Search filter
+    if (
+      search &&
+      !(sprite.name+" "+sprite.variant).toLowerCase().includes(search)
+    ) return false;
+
+    // Rarity filter
     if (rarity !== "All" && sprite.rarity !== rarity) return false;
+
+    // Variant filter
     if (variant !== "All" && sprite.variant !== variant) return false;
 
-    if (activeTab !== "all" && !d[activeTab]) return false;
+    // Correct progress filtering:
+    // Individual tabs must NOT hide unchecked Sprites
+    // before the Remaining filter gets a chance to show them.
 
     if (activeTab === "all") {
       if (activeFilter === "completed" && !isComplete(sprite)) return false;
@@ -465,17 +520,22 @@ function render() {
       if (activeFilter === "completed" && !d[activeTab]) return false;
       if (activeFilter === "remaining" && d[activeTab]) return false;
     }
+
     return true;
   });
 
-  $("cards").innerHTML = "";
+  const cards = $("cards");
+  cards.innerHTML = "";
+
   if (!visible.length) {
-    $("cards").innerHTML = '<div class="empty">No Sprites match your filters.</div>';
+    cards.innerHTML =
+      '<div class="empty">No Sprites match your filters.</div>';
     return;
   }
 
   visible.forEach(sprite => {
     const d = data[sprite.id];
+
     const card = document.createElement("article");
     card.className = "sprite-card";
 
@@ -487,6 +547,7 @@ function render() {
     img.src = sprite.image;
     img.alt = sprite.name+" "+sprite.variant;
     img.loading = "lazy";
+
     img.onerror = function() {
       const fallback = document.createElement("div");
       fallback.className = "image-fallback";
@@ -499,6 +560,7 @@ function render() {
       '<div class="sprite-name"></div>'+
       '<div class="sprite-variant"></div>'+
       '<span class="rarity '+sprite.rarity+'">'+sprite.rarity+'</span>';
+
     info.querySelector(".sprite-name").textContent = sprite.name;
     info.querySelector(".sprite-variant").textContent = sprite.variant;
 
@@ -515,6 +577,7 @@ function render() {
       const checkbox = document.createElement("input");
       checkbox.type = "checkbox";
       checkbox.checked = !!d[key];
+
       checkbox.addEventListener("change",() => {
         data[sprite.id][key] = checkbox.checked;
         saveData();
@@ -524,94 +587,136 @@ function render() {
 
       const text = document.createElement("span");
       text.textContent = labels[key];
+
       label.append(checkbox,text);
       checks.append(label);
     });
 
     card.append(checks);
-    $("cards").append(card);
+    cards.append(card);
   });
 }
 
 function setTab(tab) {
   activeTab = tab;
   activeFilter = "all";
+
   document.querySelectorAll(".tab").forEach(button => {
     button.classList.toggle("active",button.dataset.tab === tab);
   });
+
   document.querySelectorAll(".filter").forEach(button => {
     button.classList.toggle("active",button.dataset.filter === "all");
   });
+
   render();
 }
 
 document.querySelectorAll(".tab").forEach(button => {
-  button.addEventListener("click",() => setTab(button.dataset.tab));
+  button.addEventListener("click",() => {
+    setTab(button.dataset.tab);
+  });
 });
+
 document.querySelectorAll(".filter").forEach(button => {
   button.addEventListener("click",() => {
     activeFilter = button.dataset.filter;
+
     document.querySelectorAll(".filter").forEach(b => {
       b.classList.toggle("active",b === button);
     });
+
     render();
   });
 });
+
 $("search").addEventListener("input",render);
 $("rarity").addEventListener("change",render);
 $("variant").addEventListener("change",render);
 
+// Export progress backup
 $("exportBtn").addEventListener("click",() => {
   const backup = {
     version:2,
     exported:new Date().toISOString(),
     data
   };
-  const blob = new Blob([JSON.stringify(backup,null,2)],{type:"application/json"});
+
+  const blob = new Blob(
+    [JSON.stringify(backup,null,2)],
+    {type:"application/json"}
+  );
+
   const url = URL.createObjectURL(blob);
   const a = document.createElement("a");
+
   a.href = url;
   a.download = "fortnite-sprite-tracker-backup.json";
   a.click();
+
   URL.revokeObjectURL(url);
 });
 
-$("importBtn").addEventListener("click",() => $("importFile").click());
+// Import progress backup
+$("importBtn").addEventListener("click",() => {
+  $("importFile").click();
+});
+
 $("importFile").addEventListener("change",async event => {
   const file = event.target.files[0];
   if (!file) return;
+
   try {
     const parsed = JSON.parse(await file.text());
     const imported = parsed.data || parsed;
-    if (!imported || typeof imported !== "object") throw new Error("Invalid backup");
+
+    if (!imported || typeof imported !== "object") {
+      throw new Error("Invalid backup");
+    }
+
     sprites.forEach(sprite => {
       const entry = imported[sprite.id];
+
       if (entry && typeof entry === "object") {
         Object.keys(labels).forEach(key => {
           data[sprite.id][key] = !!entry[key];
         });
       }
     });
+
     saveData();
     updateStats();
     render();
+
     alert("Backup imported successfully!");
   } catch(e) {
     alert("That backup file could not be imported.");
   }
+
   event.target.value = "";
 });
 
+// Reset progress
 $("resetBtn").addEventListener("click",() => {
-  if (!confirm("Are you sure you want to reset all Sprite progress?")) return;
+  if (!confirm("Are you sure you want to reset all Sprite progress?")) {
+    return;
+  }
+
   sprites.forEach(sprite => {
-    data[sprite.id] = {owned:false,mastered:false,found:false,won:false};
+    data[sprite.id] = {
+      owned:false,
+      mastered:false,
+      found:false,
+      won:false
+    };
   });
+
   saveData();
   updateStats();
   render();
 });
 
+// Start tracker
 loadData();
 updateStats();
 render();
