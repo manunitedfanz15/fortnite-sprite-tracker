@@ -342,21 +342,59 @@ const base = [
  ["Zee","Mythic","zee",1]
 ];
 
+
 const variants = ["Normal","Fortune","Cursed"];
+
 const variantPrefix = {
   Normal:"",
   Fortune:"fortune-",
   Cursed:"cursed-"
 };
+
+// Verified images for the seven new Sprites.
+// Original 35 Sprite image URLs remain unchanged.
+const newSpriteImages = {
+  "mini-miku-Normal":
+    "https://fortnite.gg/img/x/sprites/icons/T_Icon_BR_Creature_Sprite_LushlyZest_ui_v2_1_Alpha_L.webp",
+
+  "mini-miku-Fortune":
+    "https://fortnite.gg/img/x/sprites/icons/T_Icon_BR_Creature_Sprite_LushlyZest_Jeweled_ui_v1_1_Alpha_L.webp",
+
+  "mini-miku-Cursed":
+    "https://fortnite.gg/img/x/sprites/icons/T_Icon_BR_Creature_Sprite_LushlyZest_Cursed_ui_v1_1_Alpha_L.webp",
+
+  "squiplash-Normal":
+    "https://fortnite.gg/img/x/sprites/icons/T_Icon_BR_Creature_Sprite_PirateCalamari_L.webp",
+
+  "squiplash-Fortune":
+    "https://fortnite.gg/img/x/sprites/icons/T_Icon_BR_Creature_Sprite_PirateCalamari_Jeweled_L.webp",
+
+  "squiplash-Cursed":
+    "https://fortnite.gg/img/x/sprites/icons/T_Icon_BR_Creature_Sprite_PirateCalamari_Cursed_L.webp",
+
+  "zee-Normal":
+    "https://fortnite.gg/img/x/sprites/icons/T_Icon_BR_Creature_Sprite_ZeroPointPiece_ui_v3_1_Alpha_L.webp"
+};
+
 const sprites = [];
 
 base.forEach((item,index) => {
   const [name,rarity,slug,count] = item;
+
   variants.slice(0,count).forEach(variant => {
+    const imageKey = slug+"-"+variant;
+
     sprites.push({
       id:index+"-"+variant,
-      name, rarity, slug, variant,
-      image:"https://www.fortnitetools.com/images/sprites/"+
+      name,
+      rarity,
+      slug,
+      variant,
+
+      // Use verified image for new Sprites,
+      // otherwise preserve the original image URL.
+      image: newSpriteImages[imageKey] ||
+        "https://www.fortnitetools.com/images/sprites/"+
         variantPrefix[variant]+slug+"-sprite.webp"
     });
   });
